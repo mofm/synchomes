@@ -1,0 +1,17 @@
+*.iso
+*.img
+*.tar
+*.gz
+*.bz2
+*.tar.gz
+*.tar.bz2
+*.xz
+*.zip
+*.rar
+.cache
+cache
+Cache
+*cache
+*Cache
+.local/share/Trash/
+*.tmp
