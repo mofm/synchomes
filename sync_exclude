@@ -8,10 +8,7 @@
 *.xz
 *.zip
 *.rar
-.cache
-cache
-Cache
 *cache
 *Cache
 .local/share/Trash/
-*.tmp
+*tmp
