@@ -18,7 +18,7 @@ check_ssh() {
 
     ssh_connect=$(ssh -q -o BatchMode=yes -o ConnectTimeout=5 -i $SSH_ID $USER@$HOST -p $PORT echo $?)
     if [[ $ssh_connect == 0 ]] ; then
-    	echo $HOST ssh connection successful
+    	echo $HOST :  ssh connection successful
     elif [[ $status == "Permission denied"* ]] ; then
         echo $HOST $status "Permission denied.Check ssh connection"
 	exit 1
