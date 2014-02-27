@@ -48,7 +48,7 @@ Arguments:
 	-c check ssh for remote secure connection
 	-r check remote backup/sync directory"
 
-# if you want to add parametre+argument.you use ':'. for example, "set -- $(getopt hrc: "$@")" -> you have to an argument for 'c' parametre's.
+# if you want to add a parametre with argument.you can use ':'. for example, "set -- $(getopt hrc: "$@")" -> you have to an argument for 'c' parametre's.
 set -- $(getopt hrc "$@")
 while [ $# -gt 0 ]
 do
