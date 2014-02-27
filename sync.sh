@@ -28,6 +28,7 @@ check_ssh() {
     fi
 }
 
+# Check remote backup directory
 check_remotedirectory() {
     check_directory=$(ssh -q -o BatchMode=yes -i $SSH_ID $USER@$HOST -p $PORT [ -d "$SYNC_DIRECTORY" ] &&  echo $?)
     if [[ $check_directory == 0 ]] ; then
@@ -38,6 +39,7 @@ check_remotedirectory() {
     fi
 }
 
+# execute functions
 check_ssh && check_remotedirectory
 
 #rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
