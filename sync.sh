@@ -5,24 +5,39 @@ EXCLUDE="sync_exclude"
 # port for rsync over ssh
 PORT="your_port"
 # backup hostname or IP
-HOST="examples.com"
+HOST="example.com"
 # Your SSH ID KEY
-SSH_ID="$HOME/.ssh/id_rsa"
+SSH_ID="$HOME/.ssh/your_key"
 # username for rsync over ssh
-USER="user"
+USER="your_user"
 # backup directory path on backup host
-SYNC_DIRECTORY="/home/user/backup/"
+SYNC_DIRECTORY="/home/backup/test"
 
 # Check ssh connection
+check_ssh() {
 
-status=$(ssh -q -o BatchMode=yes -o ConnectTimeout=5 -i $SSH_ID $USER@$HOST -p $PORT echo ok 2>&1)
-if [[ $status == ok ]] ; then
-        echo $HOST connection successful 
-elif [[ $status == "Permission denied"* ]] ; then
+    ssh_connect=$(ssh -q -o BatchMode=yes -o ConnectTimeout=5 -i $SSH_ID $USER@$HOST -p $PORT echo $?)
+    if [[ $ssh_connect == 0 ]] ; then
+    	echo $HOST ssh connection successful
+    elif [[ $status == "Permission denied"* ]] ; then
         echo $HOST $status "Permission denied.Check ssh connection"
-else
-        echo $HOST $status "Check network and ssh connection"
-fi
+	exit 1
+    else
+       	echo $HOST $status "Check network and ssh connection"
+	exit 1
+    fi
+}
 
+check_remotedirectory() {
+    check_directory=$(ssh -q -o BatchMode=yes -i $SSH_ID $USER@$HOST -p $PORT [ -d "$SYNC_DIRECTORY" ] &&  echo $?)
+    if [[ $check_directory == 0 ]] ; then
+    	echo $SYNC_DIRECTORY found.OK.
+    else
+    	echo $SYNC_DIRECTORY not found.check this!!!
+	exit 1
+    fi
+}
 
-rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
+check_ssh && check_remotedirectory
+
+#rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
