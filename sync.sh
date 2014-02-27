@@ -39,6 +39,36 @@ check_remotedirectory() {
     fi
 }
 
+# usage and parametres control
+
+usage="$(basename "$0") [-h] [-c] [-r]
+backup and sync your home directory to remote server
+Arguments:
+	-h help 
+	-c check ssh for remote secure connection
+	-r check remote backup/sync directory"
+
+# if you want to add parametre+argument.you use ':'. for example, "set -- $(getopt hrc: "$@")" -> you have to an argument for 'c' parametre's.
+set -- $(getopt hrc "$@")
+while [ $# -gt 0 ]
+do
+    case "$1" in
+    	(-h) echo "$usage"
+	     exit
+	     ;;
+	(-r) check_remotedirectory
+	     ;;
+	(-c) check_ssh
+	     ;;
+	(--) break
+	     ;;
+	(*) echo "$0: error - unrecognized option $1" 1>&2
+	    exit 1
+	    ;;
+    esac
+    shift
+done
+
 # execute functions
 check_ssh && check_remotedirectory
 
