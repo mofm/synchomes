@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # exclude-list file
-EXCLUDE=".sync_exclude"
+EXCLUDE="sync_exclude"
 # port for rsync over ssh
 PORT="your_port"
 # backup hostname or IP
