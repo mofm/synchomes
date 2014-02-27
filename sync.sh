@@ -39,6 +39,13 @@ check_remotedirectory() {
     fi
 }
 
+# check root control!
+
+if [ "$EUID" == "0" ] ; then
+    echo "You not be root to run this script.You are silly!" 1>&2
+    exit 1
+fi
+
 # usage and parametres control
 
 usage="$(basename "$0") [-h] [-c] [-r]
