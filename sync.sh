@@ -39,12 +39,22 @@ check_remotedirectory() {
     fi
 }
 
-# check root control!
+check_end() {
 
-if [ "$EUID" == "0" ] ; then
-    echo "You not be root to run this script.You are silly!" 1>&2
-    exit 1
-fi
+    # check root control!
+
+    if [ "$EUID" == "0" ] ; then
+    	echo "You not be root to run this script.You are silly!" 1>&2
+    	exit 1
+    fi
+
+    # check required commands
+    CMDS="ssh rsync"
+    for i in $CMDS
+    do
+    	command -v $i && continue || { echo "$i command not found."; exit 1;}
+    done
+}
 
 # usage and parametres control
 
@@ -76,7 +86,7 @@ do
     shift
 done
 
-# execute functions
-check_ssh && check_remotedirectory
+# check root and command control before execute script
+check_end  
 
 #rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
