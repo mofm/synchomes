@@ -15,7 +15,6 @@ SYNC_DIRECTORY="/home/backup/test"
 
 # Check ssh connection
 check_ssh() {
-
     ssh_connect=$(ssh -q -o BatchMode=yes -o ConnectTimeout=5 -i $SSH_ID $USER@$HOST -p $PORT echo $?)
     if [[ $ssh_connect == 0 ]] ; then
     	echo $HOST :  ssh connection successful
@@ -40,14 +39,11 @@ check_remotedirectory() {
 }
 
 check_end() {
-
     # check root control!
-
     if [ "$EUID" == "0" ] ; then
     	echo "You not be root to run this script.You are silly!" 1>&2
     	exit 1
     fi
-
     # check required commands
     CMDS="ssh rsync"
     for i in $CMDS
@@ -57,7 +53,6 @@ check_end() {
 }
 
 # usage and parametres control
-
 usage="$(basename "$0") [-h] [-c] [-r]
 backup and sync your home directory to remote server
 Arguments:
@@ -86,7 +81,7 @@ do
     shift
 done
 
-# check root and command control before execute script
+# check root and command control before run script
 check_end  
 
 #rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
