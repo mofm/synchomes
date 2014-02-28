@@ -48,9 +48,12 @@ check_end() {
     CMDS="ssh rsync"
     for i in $CMDS
     do
-    	command -v $i && continue || { echo "$i command not found."; exit 1;}
+    	command -v $i > /dev/null 2>&1 && continue || { echo "$i command not found."; exit 1;}
     done
 }
+
+# check root and command control before run script
+check_end  
 
 # usage and parametres control
 usage="$(basename "$0") [-h] [-c] [-r]
@@ -80,8 +83,5 @@ do
     esac
     shift
 done
-
-# check root and command control before run script
-check_end  
 
 #rsync -avz --exclude-from "$EXCLUDE" --max-size=50M -e 'ssh -p '$PORT'' $HOME "$USER"@"$HOST":"$SYNC_DIRECTORY"
