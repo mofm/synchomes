@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# exclude-list file
-EXCLUDE="sync_exclude"
 # port for rsync over ssh
 PORT="your_port"
 # backup hostname or IP
@@ -12,17 +10,21 @@ SSH_ID="$HOME/.ssh/your_key"
 USER="your_user"
 # backup directory path on backup host
 SYNC_DIRECTORY="/home/backup/test"
+# exclude-list file
+EXCLUDE="sync_exclude"
+# max file size limit for sync (default: 50M)
+MAX_FSIZE="50M"
 
 # Check ssh connection
 check_ssh() {
     ssh_connect=$(ssh -q -o BatchMode=yes -o ConnectTimeout=5 -i $SSH_ID $USER@$HOST -p $PORT echo $?)
     if [[ $ssh_connect == 0 ]] ; then
-    	echo $HOST :  ssh connection successful
+    	echo $HOST : "ssh connection successful"
     elif [[ $status == "Permission denied"* ]] ; then
-        echo $HOST $status "Permission denied.Check ssh connection"
+        echo $HOST $status "Permission denied.Check your ssh connection"
 	exit 1
     else
-       	echo $HOST $status "Check network and ssh connection"
+       	echo $HOST $status "Check your network and ssh connection"
 	exit 1
     fi
 }
